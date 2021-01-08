@@ -10,7 +10,7 @@ RSpec.describe TelnyxMessage, type: :model do
   end
 
   describe "creation" do 
-    it "can create a new contact message" do 
+    xit "can create a new contact message" do 
       expect(TelnyxMessage.count).to eq(0)
       contact = Contact.create!(phone_number: ENV['MY_PHONE_NUMBER'], carrier: "AT&T", line_type: "Wireless")
       message = TelnyxMessage.create!(contact_id: contact.id, text: "This is a test text!")
@@ -22,7 +22,7 @@ RSpec.describe TelnyxMessage, type: :model do
 
   describe "model methods" do 
     describe "send" do
-      it "can send a message to my phone with Telnyx" do 
+      xit "can send a message to my phone with Telnyx" do 
         contact = Contact.create!(phone_number: ENV['MY_PHONE_NUMBER'], carrier: "AT&T", line_type: "Wireless")
         message = TelnyxMessage.create!(contact_id: contact.id, text: "This is a test text!")
         message.send_message
