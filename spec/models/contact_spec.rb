@@ -15,9 +15,9 @@ RSpec.describe Contact, type: :model do
   describe "creation" do 
     it "can create a new contact" do 
       expect(Contact.count).to eq(0)
-      contact = Contact.create!(phone_number: "+8175010256", carrier: "AT&T", line_type: "Wireless")
+      contact = Contact.create!(phone_number: "+8175555555", carrier: "AT&T", line_type: "Wireless")
       expect(Contact.count).to eq(1)
-      expect(contact.phone_number).to eq("+8175010256")
+      expect(contact.phone_number).to eq("+8175555555")
       expect(contact.carrier).to eq("AT&T")
       expect(contact.line_type).to eq("Wireless")
     end
