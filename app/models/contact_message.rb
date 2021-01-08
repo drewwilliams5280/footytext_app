@@ -4,6 +4,8 @@ class ContactMessage < ApplicationRecord
 
   belongs_to :contact
 
+  after_create :respond
+
   def respond
     if text.downcase.include?("pizza") && text.downcase.include?("ice cream")
       TelnyxMessage.create!(contact: contact, text: "Chicago pizza is the best and I prefer gelato")
