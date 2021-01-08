@@ -47,6 +47,10 @@ RSpec.describe ContactMessage, type: :model do
         contact_message5.respond
         expect(TelnyxMessage.count).to eq(5)
         expect(TelnyxMessage.last.text).to eq("I prefer gelato")
+        contact_message6 = ContactMessage.create!(contact_id: contact.id, text: "This text has the word pIZZA and IcE cReAm woah!", received_at: DateTime.parse("2021-01-08T04:10:58.533+00:00"))
+        contact_message6.respond
+        expect(TelnyxMessage.count).to eq(6)
+        expect(TelnyxMessage.last.text).to eq("Chicago pizza is the best and I prefer gelato")
       end
     end
   end
