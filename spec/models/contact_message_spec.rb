@@ -13,7 +13,7 @@ RSpec.describe ContactMessage, type: :model do
   describe "creation" do 
     it "can create a new contact message" do 
       expect(ContactMessage.count).to eq(0)
-      contact = Contact.create!(phone_number: "+8175555555", carrier: "AT&T", line_type: "Wireless")
+      contact = Contact.create!(phone_number: ENV['MY_PHONE_NUMBER'], carrier: "AT&T", line_type: "Wireless")
       message = ContactMessage.create!(contact_id: contact.id, text: "This is a test text!", received_at: DateTime.parse("2021-01-08T04:10:58.533+00:00"))
       expect(ContactMessage.count).to eq(1)
       expect(message.contact_id).to eq(contact.id)
@@ -26,7 +26,7 @@ RSpec.describe ContactMessage, type: :model do
     describe "respond after create" do
       it "responds automatically when a contact message is created" do 
         expect(TelnyxMessage.count).to eq(0)
-        contact = Contact.create!(phone_number: "+8175555555", carrier: "AT&T", line_type: "Wireless")
+        contact = Contact.create!(phone_number: ENV['MY_PHONE_NUMBER'], carrier: "AT&T", line_type: "Wireless")
         contact_message = ContactMessage.create!(contact_id: contact.id, text: "This is a test text!", received_at: DateTime.parse("2021-01-08T04:10:58.533+00:00"))
         expect(TelnyxMessage.count).to eq(1)
         expect(TelnyxMessage.last.text).to eq("Please send either the word ‘pizza’ or ‘ice cream’ for a different response")
@@ -36,7 +36,7 @@ RSpec.describe ContactMessage, type: :model do
     describe "respond" do
       it "can create a correct Telnyx message" do 
         expect(TelnyxMessage.count).to eq(0)
-        contact = Contact.create!(phone_number: "+8175555555", carrier: "AT&T", line_type: "Wireless")
+        contact = Contact.create!(phone_number: ENV['MY_PHONE_NUMBER'], carrier: "AT&T", line_type: "Wireless")
         contact_message1 = ContactMessage.create!(contact_id: contact.id, text: "This is a test text!", received_at: DateTime.parse("2021-01-08T04:10:58.533+00:00"))
         expect(TelnyxMessage.count).to eq(1)
         expect(TelnyxMessage.last.text).to eq("Please send either the word ‘pizza’ or ‘ice cream’ for a different response")
