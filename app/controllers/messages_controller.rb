@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   skip_before_action :verify_authenticity_token
   def create
     json = JSON.parse(request.body.read)
-    unless json['data']['direction'] == "outbound"
+    if json['data']['payload']['direction'] == "inbound"
       contact = Contact.find_or_create_by(json['data']['payload']['from'])
       ContactMessage.create(contact: contact, 
                             text: json['data']['payload']['text'], 
