@@ -4,10 +4,11 @@ class MessagesController < ApplicationController
     json = JSON.parse(request.body.read)
     if json['data']['payload']['direction'] == "inbound"
       contact = Contact.find_or_create_by(json['data']['payload']['from'])
-      ContactMessage.create(contact: contact, 
-                            text: json['data']['payload']['text'], 
-                            received_at: DateTime.parse(json['data']['payload']['received_at'])
-                            )
+      ContactMessage.create(
+        contact: contact, 
+        text: json['data']['payload']['text'], 
+        received_at: DateTime.parse(json['data']['payload']['received_at'])
+      )
     end
   end
 end
