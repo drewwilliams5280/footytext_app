@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 2021_01_08_195228) do
 
   create_table "contact_messages", force: :cascade do |t|
     t.string "text"
-    t.datetime "received_at"
     t.bigint "contact_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -28,8 +27,6 @@ ActiveRecord::Schema.define(version: 2021_01_08_195228) do
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "carrier"
-    t.string "line_type"
   end
 
   create_table "telnyx_messages", force: :cascade do |t|
