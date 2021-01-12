@@ -1,24 +1,98 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a Rails app using the Telnyx platform to receive text messages and autorespond using the `telnyx` gem.
 
-Things you may want to cover:
+### How It Works
 
-* Ruby version
+The core functionality of the app is built with a `messages_controller`, models for `contacts`, `contact_messages`, and `telnyx_messages`, and Active Record callbacks to perform model methods automatically.
 
-* System dependencies
+When a text message is sent to the phone number associated with your Telnyx account, a webhook designated to hit a `/messages` endpoint in your app will initiate the process.
 
-* Configuration
+```ruby
+Rails.application.routes.draw do
+  resources :messages, only: :create
+end
+```
 
-* Database creation
+The controller will parse through the request and make sure the message is an "inbound" message to perform the tasks. "Outbound" messages will render `204 No Content`. A `contact` will then either be created or found in the database if it already exists, and a `contact_message` will be created.
 
-* Database initialization
+```ruby
+class MessagesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+  def create
+    json = JSON.parse(request.body.read)
+    if json['direction'] == "inbound"
+      contact = Contact.find_or_create_by(phone_number: json['from'])
+      ContactMessage.create(
+        contact: contact, 
+        text: json['body']
+      )
+    end
+  end
+end
+```
 
-* How to run the test suite
+`Contacts` consist of a `phone_number` attribute and relationships with `contact_messages` and `telnyx_messages`
 
-* Services (job queues, cache servers, search engines, etc.)
+```ruby
+class Contact < ApplicationRecord
+  validates_presence_of :phone_number, require: true
+  has_many :contact_messages
+  has_many :telnyx_messages
+end
+```
 
-* Deployment instructions
+When the controller creates the `contact_message`, a `respond` model method is initiated using the `after_create` Active Record callback. This model method creates a related `telnyx_message` based on the contents of `self.text`. 
 
-* ...
+```ruby
+class ContactMessage < ApplicationRecord
+  validates_presence_of :text, require: true
+  belongs_to :contact
+
+  after_create :respond
+  def respond
+    if text.downcase.include?("pizza") && text.downcase.include?("ice cream")
+      TelnyxMessage.create!(contact: contact, text: "Chicago pizza is the best and I prefer gelato")
+    elsif text.downcase.include?("pizza")
+      TelnyxMessage.create!(contact: contact, text: "Chicago pizza is the best")
+    elsif text.downcase.include?("ice cream")
+      TelnyxMessage.create!(contact: contact, text: "I prefer gelato")
+    else
+      TelnyxMessage.create!(contact: contact, text: "Please send either the word ‘pizza’ or ‘ice cream’ for a different response")
+    end
+  end
+end
+```
+
+When the `telnyx_message` is created, it is then immediately sent to the `contact` using a `send_message` model method, the functionality provided to us by the `telnyx` gem, and another Active Record `after_create` callback. Our ENV variables are provided to us by using [Figaro](https://github.com/laserlemon/figaro) and an `application.yml` file. 
+
+```ruby
+class TelnyxMessage < ApplicationRecord
+  validates_presence_of :text, require: true
+  belongs_to :contact
+
+  after_create :send_message
+  def send_message
+    Telnyx.api_key = ENV['TELNYX_API_KEY']
+    Telnyx::Message.create(
+      from: ENV['TELNYX_PHONE_NUMBER'],
+      to: contact.phone_number,
+      text: text
+    )
+  end
+end
+```
+
+### How To Run Locally
+
+To run locally, you will need:
+
+* A Telnyx account
+* A Telnyx phone number
+* A Telnyx API key
+* A tunneling tool, such as [ngrok](https://developers.telnyx.com/docs/v2/development/ngrok), to connect your localhost to the internet
+* Your Telnyx messaging account's webhook set to your tunnel URL/messages. (Example: `https://example-url.ngrok.io/messages`)
+
+### Testing
+
+### Design Decisions
