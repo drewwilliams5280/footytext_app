@@ -101,14 +101,19 @@ To run locally, you will need:
 * A tunneling tool, such as [ngrok](https://developers.telnyx.com/docs/v2/development/ngrok), to connect your localhost to the internet
 * Your Telnyx messaging account's webhook set to your tunnel URL/messages. (Example: `https://example-url.ngrok.io/messages`)
 
-After the above steps are completed, clone (or fork and clone) down this repo. Run `bundle install` to install dependencies (See [gemfile](https://github.com/drewwilliams5280/telnyx_app/blob/main/Gemfile)). Run the command `bundle exec figaro install` to create your `application.yml` file. Edit your `application.yml` file to include your Telnyx phone number and API key. This gives you access to your ENV variables used above. Example:
+After the above steps are completed: 
+1. Clone (or fork and clone) down this repo. 
+2. Run `bundle install` to install dependencies (See [gemfile](https://github.com/drewwilliams5280/telnyx_app/blob/main/Gemfile)). 
+3. Run the command `bundle exec figaro install` to create your `application.yml` file. 
+4. Edit your `application.yml` file to include your Telnyx phone number and API key. This gives you access to your ENV variables used above. Example:
 
 ```ruby
 TELNYX_API_KEY: "Insert your API key here"
 TELNYX_PHONE_NUMBER: "Insert your Telnyx phone number here"
 ```
 
-Finally, run `rails db:create` and `rails db:migrate` to setup your Postgres database, and `rails s` to boot up your localhost:3000 server.
+5. Run `rails db:create` and `rails db:migrate` to setup your Postgres database. 
+6. Run `rails s` to boot up your localhost:3000 server.
 
 *Tip: If using ngrok, make sure to run the command `ngrok http 3000` instead of the recommended/default command in ngrok docs of `ngrok http 80` since our localhost is using port 3000*
 
