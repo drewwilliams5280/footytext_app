@@ -51,15 +51,23 @@ class ContactMessage < ApplicationRecord
 
   after_create :respond
   def respond
-    if text.downcase.include?("pizza") && text.downcase.include?("ice cream")
+    if pizza? && ice_cream?
       TelnyxMessage.create!(contact: contact, text: "Chicago pizza is the best and I prefer gelato")
-    elsif text.downcase.include?("pizza")
+    elsif pizza?
       TelnyxMessage.create!(contact: contact, text: "Chicago pizza is the best")
-    elsif text.downcase.include?("ice cream")
+    elsif ice_cream?
       TelnyxMessage.create!(contact: contact, text: "I prefer gelato")
     else
       TelnyxMessage.create!(contact: contact, text: "Please send either the word ‘pizza’ or ‘ice cream’ for a different response")
     end
+  end
+
+  def pizza?
+    text.downcase.include?("pizza")
+  end
+
+  def ice_cream?
+    text.downcase.include?("ice cream")
   end
 end
 ```
