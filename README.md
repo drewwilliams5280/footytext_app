@@ -1,6 +1,6 @@
 # README
 
-This is a Rails app using the Telnyx platform to receive text messages and autorespond using the `telnyx` gem.
+This is a Rails app using the [Telnyx](https://telnyx.com/) platform to receive text messages and autorespond using the `telnyx` gem.
 
 ### How It Works
 
