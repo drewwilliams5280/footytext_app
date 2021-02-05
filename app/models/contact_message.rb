@@ -11,7 +11,7 @@ class ContactMessage < ApplicationRecord
     elsif pizza?
       puts "Pizza"
     elsif ice_cream?
-      puts "ice cream"
+      arsenal
     else
       puts "Please send either the word ‘pizza’ or ‘ice cream’ for a different response"
     end
