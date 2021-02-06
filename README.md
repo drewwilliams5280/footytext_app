@@ -119,7 +119,7 @@ TELNYX_PHONE_NUMBER: "Insert your Telnyx phone number here"
 
 ### Testing
 
-This app uses the `rspec` testing suite, as well as other tools such as `capybara`, `shoulda-matchers`, and `simplecov` for coverage reports. To run the tests, use the command `bundle exec rspec`. Tests that are making active API calls to Telnyx are currently skipped and can be recognized by looking for the `xit` beginning block rather than a traditional `it` block. Simply remove the `x` to run those tests.
+This app uses the `rspec` testing suite for early-stage testing (ice cream and pizza vs football teams), as well as other tools such as `capybara`, `shoulda-matchers`, and `simplecov` for coverage reports. To run the tests, use the command `bundle exec rspec`. Tests that are making active API calls to Telnyx are currently skipped and can be recognized by looking for the `xit` beginning block rather than a traditional `it` block. Simply remove the `x` to run those tests.
 
 ### Helpful Links
 
