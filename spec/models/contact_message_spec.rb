@@ -10,14 +10,14 @@ RSpec.describe ContactMessage, type: :model do
   end
 
   describe "creation" do 
-    xit "can create a new contact message" do 
+    it "can create a new contact message" do 
       expect(ContactMessage.count).to eq(0)
       contact = Contact.create!(phone_number: ENV['MY_PHONE_NUMBER'])
-      message = ContactMessage.create!(contact_id: contact.id, text: "man city")
+      message = ContactMessage.create!(contact_id: contact.id, text: "Arsenal")
       expect(ContactMessage.count).to eq(1)
       expect(message.contact_id).to eq(contact.id)
+      # expect(message.text).to eq("Man city")
       binding.pry
-      expect(message.text).to eq("This is a ice cream test text!")
     end
   end
 
